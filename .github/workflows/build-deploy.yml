@@ -1,3 +1,10 @@
+# Optimized by ci-cost (https://github.com/mariotavarez/ci-cost)
+# Applied 3 optimizations:
+# - [HIGH] Add npm dependency cache to "build" job
+# - [HIGH] Add npm dependency cache to "deploy" job
+# - [MEDIUM] Add concurrency group to "build-deploy.yml"
+# Estimated savings: ~10 min/run
+#
 name: Build and deploy
 
 env:
@@ -12,6 +19,10 @@ on:
     types: [opened, reopened, synchronize]
   workflow_dispatch:
 
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   build:
     outputs:
